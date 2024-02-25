@@ -1,0 +1,46 @@
+version: '3'
+
+services :
+
+  mysql:
+    container_name: starwars.mysql
+    image: mysql:8.0
+    env_file: ../.env
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_DEFAULT_AUTHENTICATION_PLUGIN=caching_sha2_password
+    command: --init-file /data/application/init.sql
+    ports:
+      - 3666:3306
+    volumes:
+      - starwars-mysql:/var/lib/mysql
+      - ./init.sql:/data/application/init.sql
+    healthcheck:
+      test: mysqladmin ping -h localhost -P 3666 -u root --password=root
+    restart: always
+
+  app:
+    container_name: starwars.app
+    env_file:
+      - ../.env
+    build:
+      context: ../
+      dockerfile: .docker/Dockerfile
+    ports:
+      - "3000:3000"
+    depends_on:
+      mysql:
+        condition: service_healthy
+
+  adminer:
+    container_name: starwars.adminer
+    image: adminer
+    restart: always
+    links:
+      - mysql
+    ports:
+      - 8088:8080
+
+volumes:
+  starwars-mysql:
+    driver: local
