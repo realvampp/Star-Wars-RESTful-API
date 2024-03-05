@@ -32,15 +32,6 @@ services :
       mysql:
         condition: service_healthy
 
-  adminer:
-    container_name: starwars.adminer
-    image: adminer
-    restart: always
-    links:
-      - mysql
-    ports:
-      - 8088:8080
-
 volumes:
   starwars-mysql:
     driver: local
