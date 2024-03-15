@@ -3,6 +3,7 @@
 \!Minds.txt
 test
 /uploads
+.docker/caddy
 # compiled output
 /dist
 /node_modules

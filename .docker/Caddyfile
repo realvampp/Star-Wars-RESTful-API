@@ -1,0 +1,7 @@
+{
+    email eliktronik7@gmail.com
+}
+
+ktronyk.stud.shpp.me {
+    reverse_proxy app:3000
+}
